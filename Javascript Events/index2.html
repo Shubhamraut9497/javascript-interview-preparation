@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Practice Playground</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    .box {
+      width: 150px;
+      height: 150px;
+      background-color: lightblue;
+      text-align: center;
+      line-height: 150px;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+    .tooltip {
+      display: none;
+      margin-top: 0.5rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    form input {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .error {
+      border: 2px solid red;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎯 Mouse Events</h2>
+
+  <div class="box" id="hoverBox">Hover Me</div>
+  <div class="tooltip" id="tooltipText">You're hovering!</div>
+
+  <button id="clickButton">Click Me</button>
+  <p>Clicked <span id="clickCount">0</span> times.</p>
+
+  <button id="resetButton">Reset Count</button>
+
+  <hr />
+
+  <h2>📝 Form Events</h2>
+
+  <form id="sampleForm">
+    <label>
+      Name:
+      <input type="text" id="nameInput" required />
+    </label>
+    <label>
+      Email:
+      <input type="email" id="emailInput" required />
+    </label>
+    <button type="submit" id="submitBtn" disabled>Submit</button>
+  </form>
+
+  <script>
+    // Mouseover & Mouseout
+    const box = document.getElementById('hoverBox');
+    const tooltip = document.getElementById('tooltipText');
+
+    box.addEventListener('mouseover', () => {
+      tooltip.style.display = 'block';
+      box.style.backgroundColor = 'lightgreen';
+    });
+
+    box.addEventListener('mouseout', () => {
+      tooltip.style.display = 'none';
+      box.style.backgroundColor = 'lightblue';
+    });
+
+    // Click Counter
+    let count = 0;
+    const clickBtn = document.getElementById('clickButton');
+    const resetBtn = document.getElementById('resetButton');
+    const clickDisplay = document.getElementById('clickCount');
+
+    clickBtn.addEventListener('click', () => {
+      count++;
+      clickDisplay.textContent = count;
+    });
+
+    resetBtn.addEventListener('click', () => {
+      count = 0;
+      clickDisplay.textContent = count;
+    });
+
+    // Form Events
+    const form = document.getElementById('sampleForm');
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validateInputs() {
+      const isNameValid = nameInput.value.trim() !== '';
+      const isEmailValid = emailInput.validity.valid;
+      submitBtn.disabled = !(isNameValid && isEmailValid);
+
+      nameInput.classList.toggle('error', !isNameValid);
+      emailInput.classList.toggle('error', !isEmailValid);
+    }
+
+    nameInput.addEventListener('input', validateInputs);
+    emailInput.addEventListener('input', validateInputs);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert("Form Submitted!\n" + JSON.stringify({
+        name: nameInput.value,
+        email: emailInput.value
+      }, null, 2));
+    });
+  </script>
+
+</body>
+</html>

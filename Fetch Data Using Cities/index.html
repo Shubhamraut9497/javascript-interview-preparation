@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black text-white">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cascading Location Selector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen flex flex-col items-center px-4 py-12">
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-12">Cascading Location Selector</h1>
+
+    <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl bg-zinc-900 p-8 rounded-2xl shadow-lg border border-zinc-800">
+        <!-- Country -->
+        <div class="flex flex-col gap-2">
+            <label for="countrySelect" class="text-lg font-medium">Country</label>
+            <select id="countrySelect"
+                class="bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="">Select Country</option>
+            </select>
+        </div>
+
+        <!-- State -->
+        <div class="flex flex-col gap-2">
+            <label for="stateSelect" class="text-lg font-medium">State</label>
+            <select id="stateSelect" disabled
+                class="bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50">
+                <option value="">Select State</option>
+            </select>
+        </div>
+
+        <!-- City -->
+        <div class="flex flex-col gap-2">
+            <label for="citySelect" class="text-lg font-medium">City</label>
+            <select id="citySelect" disabled
+                class="bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50">
+                <option value="">Select City</option>
+            </select>
+        </div>
+
+        <!-- Town -->
+        <div class="flex flex-col gap-2">
+            <label for="townSelect" class="text-lg font-medium">Town</label>
+            <select id="townSelect" disabled
+                class="bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50">
+                <option value="">Select Town</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Script Import -->
+    <script type="module">
+        import { countriesData } from './countriesData.js';
+        // Your cascading logic will go here.
+
+        const allData = { ...countriesData }
+        console.log(allData);
+        const countrySelect = document.getElementById('countrySelect');
+        const stateSelect = document.getElementById('stateSelect');
+        const citySelect = document.getElementById('citySelect');
+        const townSelect = document.getElementById('townSelect');
+
+
+        function populateSelect(select, options) {
+            select.innerHTML = `<option>Select</option>`;
+            options.forEach((opt) => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                select.appendChild(option);
+            })
+            select.disabled = false;
+        }
+        populateSelect(countrySelect, Object.keys(allData));
+        countrySelect.addEventListener('change', () => {
+            const selectedCountry = countrySelect.value;
+            resetSelectState(stateSelect);
+            resetSelectState(citySelect);
+            resetSelectState(townSelect);
+            if (selectedCountry && allData[selectedCountry]) {
+                populateSelect(stateSelect, Object.keys(allData[selectedCountry]));
+            }
+        })
+        stateSelect.addEventListener('change', () => {
+            const selectedState = stateSelect.value;
+            const selectedCountry = countrySelect.value
+            resetSelectState(citySelect);
+            resetSelectState(townSelect);
+            if (selectedState && allData[selectedCountry][selectedState]) {
+                populateSelect(citySelect, Object.keys(allData[selectedCountry][selectedState]));
+            }
+        })
+        citySelect.addEventListener('change', () => {
+            const selectedCountry = countrySelect.value;
+            const selectedState = stateSelect.value;
+            const selectedCity = citySelect.value;
+            resetSelectState(townSelect);
+            if (selectedCity && allData[selectedCountry][selectedState][selectedCity]) {
+                populateSelect(townSelect, allData[selectedCountry][selectedState][selectedCity].towns)
+            }
+        })
+
+        function resetSelectState(select) {
+            select.innerHTML = `<option>Select</option>`;
+            select.disabled = true;
+        }
+    </script>
+</body>
+
+</html>

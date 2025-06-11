@@ -1,0 +1,19 @@
+Types of selectors
+ 1. Simple selectors
+ 2. Combinator selectors
+ 3. Attribute selectors
+ 4.Pseudo classes and pseudo element selectors 
+
+
+
+ 1. Simple Selectors 
+ a. type selectors
+ b. class selector
+ c. id selector
+ d. universal selectors
+
+ 2.Combinators selectors
+ a. descendent selectors
+ b. Direct child selectors
+ c. Adjecent Sibling Selectors
+ d. General Sibling Selectors

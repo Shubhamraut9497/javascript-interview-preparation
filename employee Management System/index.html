@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <header class="max-w-7xl mx-auto py-4">
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-gray-600">Employee Management System</h1>
+            <button class="px-6 py-2 bg-gray-300 text-black rounded-lg">Add Employee</button>
+        </div>
+    </header>
+    <section class="py-8 max-w-7xl mx-auto rounded-xl border-2 border-gray-400">
+        <div class="flex">
+            <!-- Employee list (30%) -->
+            <div class="basis-[30%] border-r border-gray-300 p-4">
+                <h3 class="text-xl font-semibold mb-4 border-b pb-2">Employee List</h3>
+                <!-- Example content -->
+                <ul class="space-y-2 list__of__employee">
+                    <!-- <li class="hover:bg-gray-100 p-2 rounded">John Doe</li> -->
+                </ul>
+            </div>
+
+            <!-- Employee Details (70%) -->
+            <div class="basis-[70%] p-4 ">
+                <h3 class="text-xl font-semibold mb-4 border-b pb-2">Employee Details</h3>
+                <!-- Example content -->
+                <div class="employee__info">
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <!-- Overlay -->
+        <div id="employeeModalOverlay"
+            class="fixed inset-0  bg-gray-500  bg-opacity-50 hidden items-center justify-center z-50">
+            <!-- Modal -->
+            <div class="bg-white p-6 rounded-xl w-full max-w-2xl relative">
+                <button id="closeModal"
+                    class="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl font-bold">&times;</button>
+                <h2 class="text-2xl font-semibold mb-4 text-center">Add New Employee</h2>
+
+                <form id="employeeForm" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" name="firstName" placeholder="First Name" class="border px-4 py-2 rounded"
+                            required>
+                        <input type="text" name="lastName" placeholder="Last Name" class="border px-4 py-2 rounded"
+                            required>
+                        <input type="email" name="email" placeholder="Email" class="border px-4 py-2 rounded" required>
+                        <input type="text" name="contactNumber" placeholder="Contact Number"
+                            class="border px-4 py-2 rounded" required>
+                        <input type="number" name="age" placeholder="Age" class="border px-4 py-2 rounded" required>
+                        <input type="text" name="dob" placeholder="DOB (DD/MM/YYYY)" class="border px-4 py-2 rounded"
+                            required>
+                        <input type="number" name="salary" placeholder="Salary" class="border px-4 py-2 rounded"
+                            required>
+                        <input type="text" name="address" placeholder="Address" class="border px-4 py-2 rounded"
+                            required>
+                    </div>
+                    <input type="url" name="imageUrl" placeholder="Image URL" class="border px-4 py-2 rounded w-full"
+                        required>
+                    <button type="submit"
+                        class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 w-full">Add
+                        Employee</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete JavaScript Events Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin: 30px 0 20px 0;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .event-section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+
+        .demo-area {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .demo-area h4 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 5px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        input,
+        textarea,
+        select {
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            margin: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .log {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            height: 150px;
+            overflow-y: auto;
+            border: 2px solid #34495e;
+        }
+
+        .clear-btn {
+            background: #e74c3c;
+            font-size: 12px;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .drag-area {
+            background: #f39c12;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            border: 3px dashed #d35400;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .drag-area.dragover {
+            background: #e67e22;
+            transform: scale(1.02);
+        }
+
+        .mouse-area {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 10px 0;
+            cursor: crosshair;
+        }
+
+        .coordinates {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+
+        .touch-area {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 10px 0;
+            touch-action: none;
+        }
+
+        .resize-box {
+            background: #1abc9c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            resize: both;
+            overflow: auto;
+            min-width: 200px;
+            min-height: 100px;
+        }
+
+        code {
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        .event-list {
+            columns: 2;
+            column-gap: 30px;
+            margin: 20px 0;
+        }
+
+        .event-list li {
+            break-inside: avoid;
+            margin-bottom: 8px;
+            padding: 5px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .event-list {
+                columns: 1;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 Complete JavaScript Events Guide</h1>
+
+        <div class="event-section">
+            <h2>🖱️ Mouse Events</h2>
+            <p>Mouse events are triggered by mouse interactions with elements.</p>
+
+            <div class="demo-area">
+                <h4>Interactive Mouse Demo</h4>
+                <div class="mouse-area" id="mouseArea">
+                    <h3>Mouse Playground</h3>
+                    <p>Try different mouse actions here!</p>
+                    <div class="coordinates" id="coordinates">Coordinates: (0, 0)</div>
+                </div>
+                <div class="log" id="mouseLog"></div>
+                <button class="clear-btn" onclick="clearLog('mouseLog')">Clear Log</button>
+            </div>
+
+            <h3>Complete Mouse Events List:</h3>
+            <ul class="event-list">
+                <li><code>click</code> - Single click</li>
+                <li><code>dblclick</code> - Double click</li>
+                <li><code>mousedown</code> - Mouse button pressed</li>
+                <li><code>mouseup</code> - Mouse button released</li>
+                <li><code>mousemove</code> - Mouse moved over element</li>
+                <li><code>mouseover</code> - Mouse enters element</li>
+                <li><code>mouseout</code> - Mouse leaves element</li>
+                <li><code>mouseenter</code> - Mouse enters (no bubbling)</li>
+                <li><code>mouseleave</code> - Mouse leaves (no bubbling)</li>
+                <li><code>contextmenu</code> - Right-click context menu</li>
+                <li><code>wheel</code> - Mouse wheel scroll</li>
+                <li><code>auxclick</code> - Non-primary button click</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>⌨️ Keyboard Events</h2>
+            <p>Keyboard events are fired when keys are pressed, held, or released.</p>
+
+            <div class="demo-area">
+                <h4>Keyboard Event Demo</h4>
+                <input type="text" id="keyInput" placeholder="Type here to see keyboard events..."
+                    style="width: 100%; margin-bottom: 10px;">
+                <div class="log" id="keyLog"></div>
+                <button class="clear-btn" onclick="clearLog('keyLog')">Clear Log</button>
+            </div>
+
+            <h3>Keyboard Events:</h3>
+            <ul class="event-list">
+                <li><code>keydown</code> - Key is pressed down</li>
+                <li><code>keyup</code> - Key is released</li>
+                <li><code>keypress</code> - Key press (deprecated)</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>📝 Form Events</h2>
+            <p>Form events are triggered by form interactions and submissions.</p>
+
+            <div class="demo-area">
+                <h4>Form Events Demo</h4>
+                <form id="demoForm">
+                    <input type="text" id="textInput" placeholder="Text input" required>
+                    <input type="email" id="emailInput" placeholder="Email input">
+                    <select id="selectInput">
+                        <option value="">Choose option</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                    </select>
+                    <textarea id="textArea" placeholder="Textarea"></textarea>
+                    <input type="checkbox" id="checkbox"> <label for="checkbox">Checkbox</label>
+                    <input type="radio" id="radio1" name="radio" value="1"> <label for="radio1">Radio 1</label>
+                    <input type="radio" id="radio2" name="radio" value="2"> <label for="radio2">Radio 2</label>
+                    <button type="submit">Submit</button>
+                    <button type="reset">Reset</button>
+                </form>
+                <div class="log" id="formLog"></div>
+                <button class="clear-btn" onclick="clearLog('formLog')">Clear Log</button>
+            </div>
+
+            <h3>Form Events:</h3>
+            <ul class="event-list">
+                <li><code>submit</code> - Form is submitted</li>
+                <li><code>reset</code> - Form is reset</li>
+                <li><code>change</code> - Input value changes</li>
+                <li><code>input</code> - Input value changes (real-time)</li>
+                <li><code>focus</code> - Element gains focus</li>
+                <li><code>blur</code> - Element loses focus</li>
+                <li><code>focusin</code> - Element gains focus (bubbles)</li>
+                <li><code>focusout</code> - Element loses focus (bubbles)</li>
+                <li><code>invalid</code> - Form validation fails</li>
+                <li><code>formdata</code> - FormData is constructed</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>🌐 Window/Document Events</h2>
+            <p>Events related to the browser window and document lifecycle.</p>
+
+            <div class="demo-area">
+                <h4>Window Events Demo</h4>
+                <button onclick="testResize()">Test Resize Event</button>
+                <button onclick="testScroll()">Test Scroll Event</button>
+                <button onclick="testVisibility()">Test Visibility Change</button>
+                <div class="resize-box" id="resizeBox">
+                    Resize me by dragging the corner!
+                </div>
+                <div class="log" id="windowLog"></div>
+                <button class="clear-btn" onclick="clearLog('windowLog')">Clear Log</button>
+            </div>
+
+            <h3>Window/Document Events:</h3>
+            <ul class="event-list">
+                <li><code>load</code> - Page fully loaded</li>
+                <li><code>DOMContentLoaded</code> - DOM fully loaded</li>
+                <li><code>unload</code> - Page is unloading</li>
+                <li><code>beforeunload</code> - Before page unloads</li>
+                <li><code>resize</code> - Window is resized</li>
+                <li><code>scroll</code> - Page is scrolled</li>
+                <li><code>hashchange</code> - URL hash changes</li>
+                <li><code>popstate</code> - Browser history changes</li>
+                <li><code>storage</code> - localStorage changes</li>
+                <li><code>online</code> - Browser goes online</li>
+                <li><code>offline</code> - Browser goes offline</li>
+                <li><code>visibilitychange</code> - Page visibility changes</li>
+                <li><code>pagehide</code> - Page is hidden</li>
+                <li><code>pageshow</code> - Page is shown</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>🎬 Media Events</h2>
+            <p>Events related to audio and video elements.</p>
+
+            <div class="demo-area">
+                <h4>Media Events Demo</h4>
+                <video id="demoVideo" width="300" controls>
+                    <source
+                        src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAsdtZGF0AAACrAYF//+p3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE1MiByMjg1NCBlOWE1OTAzIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAxNyAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOjA6MCBhbmFseXNlPTB4MzoweDExMyBtZT1oZXggc3VibWU9NyBwc3k9MSBwc3lfcmQ9MS4wMDowLjAwIG1peGVkX3JlZj0xIG1lX3JhbmdlPTE2IGNocm9tYV9tZT0xIHRyZWxsaXM9MSA4eDhkY3Q9MSBjcW09MCBkZWFkem9uZT0yMSwxMSBmYXN0X3Bza2lwPTEgY2hyb21hX3FwX29mZnNldD0tMiB0aHJlYWRzPTEgbG9va2FoZWFkX3RocmVhZHM9MSBzbGljZWRfdGhyZWFkcz0wIG5yPTAgZGVjaW1hdGU9MSBpbnRlcmxhY2VkPTAgYmx1cmF5X2NvbXBhdD0wIGNvbnN0cmFpbmVkX2ludHJhPTAgYmZyYW1lcz0zIGJfcHlyYW1pZD0yIGJfYWRhcHQ9MSBiX2JpYXM9MCBkaXJlY3Q9MSB3ZWlnaHRiPTEgb3Blbl9nb3A9MCB3ZWlnaHRwPTIga2V5aW50PTI1MCBrZXlpbnRfbWluPTEwIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9NDAgcmM9Y3JmIG1idHJlZT0xIGNyZj0yMy4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4wMACAAAABWWVZjCM="
+                        type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="log" id="mediaLog"></div>
+                <button class="clear-btn" onclick="clearLog('mediaLog')">Clear Log</button>
+            </div>
+
+            <h3>Media Events:</h3>
+            <ul class="event-list">
+                <li><code>loadstart</code> - Loading starts</li>
+                <li><code>loadedmetadata</code> - Metadata loaded</li>
+                <li><code>loadeddata</code> - First frame loaded</li>
+                <li><code>canplay</code> - Can start playing</li>
+                <li><code>canplaythrough</code> - Can play without stopping</li>
+                <li><code>play</code> - Playback starts</li>
+                <li><code>pause</code> - Playback pauses</li>
+                <li><code>ended</code> - Playback ends</li>
+                <li><code>timeupdate</code> - Current time updates</li>
+                <li><code>volumechange</code> - Volume changes</li>
+                <li><code>seeking</code> - Seeking starts</li>
+                <li><code>seeked</code> - Seeking ends</li>
+                <li><code>waiting</code> - Waiting for data</li>
+                <li><code>stalled</code> - Loading stalled</li>
+                <li><code>suspend</code> - Loading suspended</li>
+                <li><code>abort</code> - Loading aborted</li>
+                <li><code>error</code> - Loading error</li>
+                <li><code>emptied</code> - Media element emptied</li>
+                <li><code>ratechange</code> - Playback rate changes</li>
+                <li><code>durationchange</code> - Duration changes</li>
+                <li><code>progress</code> - Download progress</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>🖐️ Touch Events</h2>
+            <p>Touch events for mobile and touch-enabled devices.</p>
+
+            <div class="demo-area">
+                <h4>Touch Events Demo</h4>
+                <div class="touch-area" id="touchArea">
+                    Touch this area with your finger!<br>
+                    (Works on touch-enabled devices)
+                </div>
+                <div class="log" id="touchLog"></div>
+                <button class="clear-btn" onclick="clearLog('touchLog')">Clear Log</button>
+            </div>
+
+            <h3>Touch Events:</h3>
+            <ul class="event-list">
+                <li><code>touchstart</code> - Touch begins</li>
+                <li><code>touchmove</code> - Touch moves</li>
+                <li><code>touchend</code> - Touch ends</li>
+                <li><code>touchcancel</code> - Touch cancelled</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>🎯 Drag and Drop Events</h2>
+            <p>Events for drag and drop operations.</p>
+
+            <div class="demo-area">
+                <h4>Drag and Drop Demo</h4>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div id="dragItem" draggable="true"
+                        style="background: #3498db; color: white; padding: 20px; border-radius: 8px; cursor: move;">
+                        🎯 Drag me!
+                    </div>
+                    <div class="drag-area" id="dropZone">
+                        📥 Drop here!
+                    </div>
+                </div>
+                <div class="log" id="dragLog"></div>
+                <button class="clear-btn" onclick="clearLog('dragLog')">Clear Log</button>
+            </div>
+
+            <h3>Drag and Drop Events:</h3>
+            <ul class="event-list">
+                <li><code>dragstart</code> - Drag operation starts</li>
+                <li><code>drag</code> - Element is being dragged</li>
+                <li><code>dragend</code> - Drag operation ends</li>
+                <li><code>dragenter</code> - Dragged element enters drop zone</li>
+                <li><code>dragover</code> - Dragged element over drop zone</li>
+                <li><code>dragleave</code> - Dragged element leaves drop zone</li>
+                <li><code>drop</code> - Element is dropped</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>⚡ Animation and Transition Events</h2>
+            <p>Events related to CSS animations and transitions.</p>
+
+            <div class="demo-area">
+                <h4>Animation Events Demo</h4>
+                <button onclick="startAnimation()">Start Animation</button>
+                <button onclick="startTransition()">Start Transition</button>
+                <div id="animBox"
+                    style="width: 100px; height: 100px; background: #e74c3c; margin: 20px 0; border-radius: 8px; transition: all 2s ease;">
+                </div>
+                <div class="log" id="animLog"></div>
+                <button class="clear-btn" onclick="clearLog('animLog')">Clear Log</button>
+            </div>
+
+            <h3>Animation/Transition Events:</h3>
+            <ul class="event-list">
+                <li><code>animationstart</code> - CSS animation starts</li>
+                <li><code>animationend</code> - CSS animation ends</li>
+                <li><code>animationiteration</code> - CSS animation repeats</li>
+                <li><code>animationcancel</code> - CSS animation cancelled</li>
+                <li><code>transitionstart</code> - CSS transition starts</li>
+                <li><code>transitionend</code> - CSS transition ends</li>
+                <li><code>transitionrun</code> - CSS transition starts running</li>
+                <li><code>transitioncancel</code> - CSS transition cancelled</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>🔌 Other Important Events</h2>
+            <p>Miscellaneous but important events.</p>
+
+            <div class="demo-area">
+                <h4>Miscellaneous Events Demo</h4>
+                <button onclick="testClipboard()">Test Clipboard Events</button>
+                <button onclick="testComposition()">Focus Input for Composition</button>
+                <input type="text" id="compInput" placeholder="Type here (works with IME)">
+                <div class="log" id="miscLog"></div>
+                <button class="clear-btn" onclick="clearLog('miscLog')">Clear Log</button>
+            </div>
+
+            <h3>Other Events:</h3>
+            <ul class="event-list">
+                <li><code>cut</code> - Content is cut</li>
+                <li><code>copy</code> - Content is copied</li>
+                <li><code>paste</code> - Content is pasted</li>
+                <li><code>select</code> - Text is selected</li>
+                <li><code>selectstart</code> - Selection starts</li>
+                <li><code>selectionchange</code> - Selection changes</li>
+                <li><code>compositionstart</code> - IME composition starts</li>
+                <li><code>compositionupdate</code> - IME composition updates</li>
+                <li><code>compositionend</code> - IME composition ends</li>
+                <li><code>beforeinput</code> - Before input changes</li>
+                <li><code>search</code> - Search input event</li>
+                <li><code>toggle</code> - Details element toggles</li>
+                <li><code>cancel</code> - Dialog is cancelled</li>
+                <li><code>close</code> - Dialog is closed</li>
+                <li><code>contextlost</code> - Context is lost</li>
+                <li><code>contextrestored</code> - Context is restored</li>
+                <li><code>fullscreenchange</code> - Fullscreen changes</li>
+                <li><code>fullscreenerror</code> - Fullscreen error</li>
+                <li><code>pointerlockchange</code> - Pointer lock changes</li>
+                <li><code>pointerlockerror</code> - Pointer lock error</li>
+                <li><code>readystatechange</code> - Ready state changes</li>
+            </ul>
+        </div>
+
+        <div class="event-section">
+            <h2>📱 Pointer Events</h2>
+            <p>Modern unified events for mouse, touch, and pen input.</p>
+
+            <div class="demo-area">
+                <h4>Pointer Events Demo</h4>
+                <div id="pointerArea"
+                    style="background: linear-gradient(45deg, #16a085, #1abc9c); color: white; padding: 40px; text-align: center; border-radius: 8px; margin: 10px 0; touch-action: none;">
+                    Use mouse, touch, or pen here!
+                </div>
+                <div class="log" id="pointerLog"></div>
+                <button class="clear-btn" onclick="clearLog('pointerLog')">Clear Log</button>
+            </div>
+
+            <h3>Pointer Events:</h3>
+            <ul class="event-list">
+                <li><code>pointerdown</code> - Pointer pressed down</li>
+                <li><code>pointerup</code> - Pointer released</li>
+                <li><code>pointermove</code> - Pointer moves</li>
+                <li><code>pointerover</code> - Pointer enters element</li>
+                <li><code>pointerout</code> - Pointer leaves element</li>
+                <li><code>pointerenter</code> - Pointer enters (no bubbling)</li>
+                <li><code>pointerleave</code> - Pointer leaves (no bubbling)</li>
+                <li><code>pointercancel</code> - Pointer cancelled</li>
+                <li><code>gotpointercapture</code> - Pointer capture gained</li>
+                <li><code>lostpointercapture</code> - Pointer capture lost</li>
+            </ul>
+        </div>
+        
+    </div>
+    
+
+    <script>
+        // delete keyword is use to delete the key of the object;
+        
+        // Global log function
+        function logEvent(logId, message) {
+            const log = document.getElementById(logId);
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function clearLog(logId) {
+            document.getElementById(logId).innerHTML = '';
+        }
+
+        // Mouse Events
+        const mouseArea = document.getElementById('mouseArea');
+        const coordinates = document.getElementById('coordinates');
+
+        ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'contextmenu'].forEach(event => {
+            mouseArea.addEventListener(event, function (e) {
+                if (event === 'contextmenu') e.preventDefault();
+                logEvent('mouseLog', `${event.toUpperCase()}: Button ${e.button || 0} at (${e.clientX || 0}, ${e.clientY || 0})`);
+            });
+        });
+
+        mouseArea.addEventListener('mousemove', function (e) {
+            const rect = mouseArea.getBoundingClientRect();
+            const x = Math.round(e.clientX - rect.left);
+            const y = Math.round(e.clientY - rect.top);
+            coordinates.textContent = `Coordinates: (${x}, ${y})`;
+        });
+
+        mouseArea.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            logEvent('mouseLog', `WHEEL: Delta Y: ${e.deltaY}, Delta X: ${e.deltaX}`);
+        });
+
+        // Keyboard Events
+        const keyInput = document.getElementById('keyInput');
+        ['keydown', 'keyup', 'keypress'].forEach(event => {
+            keyInput.addEventListener(event, function (e) {
+                logEvent('keyLog', `${event.toUpperCase()}: Key "${e.key}" Code: ${e.code} KeyCode: ${e.keyCode || e.which}`);
+            });
+        });
+
+        // Form Events
+        const demoForm = document.getElementById('demoForm');
+        const formElements = ['textInput', 'emailInput', 'selectInput', 'textArea', 'checkbox', 'radio1', 'radio2'];
+
+        demoForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            logEvent('formLog', 'SUBMIT: Form submitted (prevented default)');
+        });
+
+        demoForm.addEventListener('reset', function (e) {
+            logEvent('formLog', 'RESET: Form reset');
+        });
+
+        formElements.forEach(id => {
+            const element = document.getElementById(id);
+            ['change', 'input', 'focus', 'blur', 'focusin', 'focusout', 'invalid'].forEach(event => {
+                element.addEventListener(event, function (e) {
+                    logEvent('formLog', `${event.toUpperCase()}: ${id} - Value: "${e.target.value || e.target.checked}"`);
+                });
+            });
+        });
+
+        // Window Events
+
+
+        // Touch Events
+        const touchArea = document.getElementById('touchArea');
+        if (touchArea) {
+            ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(event => {
+                touchArea.addEventListener(event, function (e) {
+                    e.preventDefault();
+                    const touch = e.touches[0] || e.changedTouches[0];
+                    const touchCount = e.touches.length;
+                    logEvent('touchLog', `${event.toUpperCase()}: ${touchCount} touch(es) at (${touch ? Math.round(touch.clientX) : 'N/A'}, ${touch ? Math.round(touch.clientY) : 'N/A'})`);
+                });
+            });
+        }
+
+        // Drag and Drop Events
+        const dragItem = document.getElementById('dragItem');
+        const dropZone = document.getElementById('dropZone');
+
+        if (dragItem) {
+            ['dragstart', 'drag', 'dragend'].forEach(event => {
+                dragItem.addEventListener(event, function (e) {
+                    if (event === 'dragstart') {
+                        e.dataTransfer.setData('text/plain', 'Dragged item');
+                        e.dataTransfer.effectAllowed = 'move';
+                    }
+                    logEvent('dragLog', `${event.toUpperCase()}: Drag item event`);
+                });
+            });
+        }
+
+        if (dropZone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(event => {
+                dropZone.addEventListener(event, function (e) {
+                    e.preventDefault();
+
+                    if (event === 'dragover') {
+                        e.dataTransfer.dropEffect = 'move';
+                        dropZone.classList.add('dragover');
+                    } else if (event === 'dragleave') {
+                        dropZone.classList.remove('dragover');
+                    } else if (event === 'drop') {
+                        dropZone.classList.remove('dragover');
+                        const data = e.dataTransfer.getData('text/plain');
+                        dropZone.innerHTML = `📥 Dropped: ${data}`;
+                        setTimeout(() => {
+                            dropZone.innerHTML = '📥 Drop here!';
+                        }, 2000);
+                    }
+
+                    logEvent('dragLog', `${event.toUpperCase()}: Drop zone event`);
+                });
+            });
+        }
+
+        // Animation and Transition Events
+        const animBox = document.getElementById('animBox');
+
+        function startAnimation() {
+            if (animBox) {
+                animBox.classList.add('animate');
+                setTimeout(() => {
+                    animBox.classList.remove('animate');
+                }, 2000);
+            }
+        }
+
+        function startTransition() {
+            if (animBox) {
+                const currentBg = animBox.style.backgroundColor;
+                const currentTransform = animBox.style.transform;
+
+                animBox.style.backgroundColor = currentBg === 'rgb(52, 152, 219)' ? '#e74c3c' : '#3498db';
+                animBox.style.transform = currentTransform === 'scale(1.5) rotate(45deg)' ? 'scale(1) rotate(0deg)' : 'scale(1.5) rotate(45deg)';
+            }
+        }
+
+        if (animBox) {
+            ['animationstart', 'animationend', 'animationiteration', 'animationcancel'].forEach(event => {
+                animBox.addEventListener(event, function (e) {
+                    logEvent('animLog', `${event.toUpperCase()}: Animation "${e.animationName || 'bounce'}" - Elapsed: ${e.elapsedTime.toFixed(2)}s`);
+                });
+            });
+
+            ['transitionstart', 'transitionend', 'transitionrun', 'transitioncancel'].forEach(event => {
+                animBox.addEventListener(event, function (e) {
+                    logEvent('animLog', `${event.toUpperCase()}: Transition "${e.propertyName}" - Elapsed: ${e.elapsedTime.toFixed(2)}s`);
+                });
+            });
+        }
+
+        // Miscellaneous Events
+        function testClipboard() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText('Test clipboard content').then(() => {
+                    logEvent('miscLog', 'CLIPBOARD: Text copied to clipboard');
+                }).catch(() => {
+                    logEvent('miscLog', 'CLIPBOARD: Copy failed');
+                });
+            } else {
+                logEvent('miscLog', 'CLIPBOARD: Clipboard API not supported');
+            }
+        }
+
+        function testComposition() {
+            const compInput = document.getElementById('compInput');
+            if (compInput) {
+                compInput.focus();
+                logEvent('miscLog', 'COMPOSITION: Input focused - try typing with IME');
+            }
+        }
+
+        // Clipboard events
+        document.addEventListener('cut', function (e) {
+            logEvent('miscLog', 'CUT: Content cut to clipboard');
+        });
+
+        document.addEventListener('copy', function (e) {
+            logEvent('miscLog', 'COPY: Content copied to clipboard');
+        });
+
+        document.addEventListener('paste', function (e) {
+            logEvent('miscLog', 'PASTE: Content pasted from clipboard');
+        });
+
+        // Selection events
+        document.addEventListener('selectionchange', function (e) {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                logEvent('miscLog', `SELECTIONCHANGE: Selected "${selection.toString().substring(0, 20)}${selection.toString().length > 20 ? '...' : ''}"`);
+            }
+        });
+
+        // Composition events
+        const compInput = document.getElementById('compInput');
+        if (compInput) {
+            ['compositionstart', 'compositionupdate', 'compositionend'].forEach(event => {
+                compInput.addEventListener(event, function (e) {
+                    logEvent('miscLog', `${event.toUpperCase()}: Data: "${e.data || ''}" - Type: ${e.type}`);
+                });
+            });
+
+            compInput.addEventListener('beforeinput', function (e) {
+                logEvent('miscLog', `BEFOREINPUT: Input type: ${e.inputType} - Data: "${e.data || ''}"`);
+            });
+
+            compInput.addEventListener('select', function (e) {
+                logEvent('miscLog', `SELECT: Text selected in input`);
+            });
+        }
+
+        // Pointer Events
+        const pointerArea = document.getElementById('pointerArea');
+        if (pointerArea) {
+            ['pointerdown', 'pointerup', 'pointermove', 'pointerover', 'pointerout', 'pointerenter', 'pointerleave', 'pointercancel', 'gotpointercapture', 'lostpointercapture'].forEach(event => {
+                pointerArea.addEventListener(event, function (e) {
+                    const pointerType = e.pointerType || 'unknown';
+                    const pressure = e.pressure !== undefined ? e.pressure.toFixed(2) : 'N/A';
+
+                    if (event === 'pointermove') {
+                        // Throttle move events
+                        if (!this.lastPointerMove || Date.now() - this.lastPointerMove > 100) {
+                            logEvent('pointerLog', `${event.toUpperCase()}: ${pointerType} at (${Math.round(e.clientX)}, ${Math.round(e.clientY)}) - Pressure: ${pressure}`);
+                            this.lastPointerMove = Date.now();
+                        }
+                    } else {
+                        logEvent('pointerLog', `${event.toUpperCase()}: ${pointerType} (ID: ${e.pointerId}) - Pressure: ${pressure}`);
+                    }
+                });
+            });
+        }
+
+        // Additional Window Events that were mentioned but not implemented
+        window.addEventListener('online', function () {
+            logEvent('windowLog', 'ONLINE: Browser went online');
+        });
+
+        window.addEventListener('offline', function () {
+            logEvent('windowLog', 'OFFLINE: Browser went offline');
+        });
+
+        window.addEventListener('beforeunload', function (e) {
+            // Note: This won't log because the page is unloading
+            console.log('BEFOREUNLOAD: Page is about to unload');
+        });
+
+        window.addEventListener('pagehide', function (e) {
+            logEvent('windowLog', `PAGEHIDE: Page hidden - Persisted: ${e.persisted}`);
+        });
+
+        window.addEventListener('pageshow', function (e) {
+            logEvent('windowLog', `PAGESHOW: Page shown - Persisted: ${e.persisted}`);
+        });
+
+        // Storage event (fires when localStorage changes in another tab)
+        window.addEventListener('storage', function (e) {
+            logEvent('windowLog', `STORAGE: Key "${e.key}" changed from "${e.oldValue}" to "${e.newValue}"`);
+        });
+
+        // Hash change event
+        window.addEventListener('hashchange', function (e) {
+            logEvent('windowLog', `HASHCHANGE: From "${e.oldURL}" to "${e.newURL}"`);
+        });
+
+        // Popstate event
+        window.addEventListener('popstate', function (e) {
+            logEvent('windowLog', `POPSTATE: State changed - ${JSON.stringify(e.state)}`);
+        });
+
+        // Error handling
+        window.addEventListener('error', function (e) {
+            logEvent('windowLog', `ERROR: ${e.message} at ${e.filename}:${e.lineno}`);
+        });
+
+        window.addEventListener('unhandledrejection', function (e) {
+            logEvent('windowLog', `UNHANDLED REJECTION: ${e.reason}`);
+        });
+
+        // Additional form events for validation
+        const textInput = document.getElementById('textInput');
+        if (textInput) {
+            textInput.addEventListener('invalid', function (e) {
+                logEvent('formLog', `INVALID: Validation failed - ${e.target.validationMessage}`);
+            });
+        }
+
+        // Page load events
+        document.addEventListener('DOMContentLoaded', function () {
+            logEvent('windowLog', 'DOMCONTENTLOADED: DOM fully loaded and parsed');
+        });
+
+        window.addEventListener('load', function () {
+            logEvent('windowLog', 'LOAD: Page fully loaded including all resources');
+        });
+
+        // Initialize logging for events that may have already fired
+        setTimeout(() => {
+            logEvent('windowLog', '✅ Event listeners initialized and ready!');
+        }, 100);
+
+        // Helper function to simulate some events for demonstration
+        function simulateEvents() {
+            // This could be called to trigger some events programmatically
+            logEvent('windowLog', 'SIMULATION: Various events can be triggered through interaction');
+        }
+
+        // Call simulation on load
+        simulateEvents();
+    </script>
+</body>
+
+</html>
